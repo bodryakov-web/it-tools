@@ -1,5 +1,0 @@
-dbHost=localhost
-dbName=p-351366_linux-learn
-dbUser=p-351366_linux-learn
-dbPass=Anna-140275
-DB_CHARSET=utf8mb4

@@ -1,0 +1,5 @@
+dbHost=localhost
+dbName=p-351366_it-tools
+dbUser=p-351366_it-tools
+dbPass=Anna-140275
+DB_CHARSET=utf8mb4

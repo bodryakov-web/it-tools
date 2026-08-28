@@ -1,0 +1,26 @@
+# Конфигурация Apache для Front Controller паттерна
+# Перенаправляет все запросы на index.php кроме существующих файлов
+
+<IfModule mod_rewrite.c>
+    # Включение модуля rewrite
+    RewriteEngine On
+
+    # Базовый URL для приложения (подпапка it-tools)
+    RewriteBase /it-tools/
+
+    # Не перенаправлять существующие файлы и директории
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Перенаправлять все запросы на index.php
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+# Установка кодировки по умолчанию
+AddDefaultCharset UTF-8
+
+# Запрет доступа к скрытым файлам
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
