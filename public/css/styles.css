@@ -455,7 +455,22 @@
     font-size: 0.9em;
   }
 
-  [data-theme="dark"] .lesson__content code {
+  .ck-editor__editable code,
+  .ck-content code {
+    display: inline-block;
+    background-color: var(--color-gray-100);
+    padding: 0.15em 0.45em;
+    border-radius: var(--radius-sm);
+    font-family:
+      "SFMono-Regular", "Consolas", "Liberation Mono", "Menlo", monospace;
+    font-size: 0.9em;
+    line-height: 1.5;
+    vertical-align: baseline;
+  }
+
+  [data-theme="dark"] .lesson__content code,
+  [data-theme="dark"] .ck-editor__editable code,
+  [data-theme="dark"] .ck-content code {
     background-color: var(--color-gray-700);
   }
 

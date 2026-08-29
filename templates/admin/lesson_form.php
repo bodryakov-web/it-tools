@@ -72,6 +72,11 @@ $testsText = isset($testsText) ? $testsText : '';
             
             <div class="admin-form__field">
                 <label class="admin-form__label" for="theory">Теоретический материал</label>
+                <div style="display: flex; gap: 10px; margin-bottom: 8px;">
+                    <button type="button" class="inline-code-btn" onclick="wrapInCode('theory')" style="padding: 6px 12px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-family: monospace; font-weight: bold;">
+                        &lt;code&gt;
+                    </button>
+                </div>
                 <textarea class="admin-form__editor" id="theory" name="theory" rows="10"><?php echo $theoryContent; ?></textarea>
             </div>
             
@@ -90,6 +95,11 @@ $testsText = isset($testsText) ? $testsText : '';
             
             <div class="admin-form__field">
                 <label class="admin-form__label" for="lab">Лабораторная работа</label>
+                <div style="display: flex; gap: 10px; margin-bottom: 8px;">
+                    <button type="button" class="inline-code-btn" onclick="wrapInCode('lab')" style="padding: 6px 12px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-family: monospace; font-weight: bold;">
+                        &lt;code&gt;
+                    </button>
+                </div>
                 <textarea class="admin-form__editor" id="lab" name="lab" rows="10"><?php echo $labContent; ?></textarea>
             </div>
             
@@ -103,44 +113,120 @@ $testsText = isset($testsText) ? $testsText : '';
     </div>
 </div>
 
-<!-- CKEditor 5 CDN -->
-<script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+<!-- CKEditor 5 Classic local build -->
+<script src="/it-tools/public/vendor/ckeditor/classic/ckeditor.js"></script>
+<script src="/it-tools/public/vendor/ckeditor/classic/ru.js"></script>
 <script>
+// Helper function to wrap selected text in code tags
+function wrapInCode(fieldId) {
+    const editor = window.editors && window.editors[fieldId];
+    if (!editor) {
+        return;
+    }
+
+    const selection = editor.model.document.selection;
+    if (selection.isCollapsed) {
+        alert('Please select text first');
+        return;
+    }
+
+    try {
+        editor.model.change(writer => {
+            const ranges = selection.getRanges();
+            for (const range of ranges) {
+                // Set an attribute on the selected text
+                writer.setAttribute('codeInline', true, range);
+            }
+        });
+    } catch (error) {
+        console.error('Error applying code formatting:', error);
+    }
+}
+
+// Store editors globally for access
+window.editors = {};
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Инициализация CKEditor 5 для теории
-    ClassicEditor
-        .create(document.querySelector('#theory'), {
-            toolbar: [
-                'codeBlock', '|',
-                'removeFormat', '|',
-                'code', '|',
-                'bold', '|',
-                'fontSize:small', '|',
-                'insertTable', '|',
-                'link'
-            ],
-            language: 'ru'
-        })
-        .catch(error => {
-            console.error(error);
-        });
-    
-    // Инициализация CKEditor 5 для лабораторной работы
-    ClassicEditor
-        .create(document.querySelector('#lab'), {
-            toolbar: [
-                'codeBlock', '|',
-                'removeFormat', '|',
-                'code', '|',
-                'bold', '|',
-                'fontSize:small', '|',
-                'insertTable', '|',
-                'link'
-            ],
-            language: 'ru'
-        })
-        .catch(error => {
-            console.error(error);
-        });
+    const Editor = window.ClassicEditor;
+
+    if (!Editor) {
+        console.error('Local CKEditor ClassicEditor is not available');
+        return;
+    }
+
+    const editorConfig = {
+        toolbar: [
+            'heading',
+            'bold',
+            'italic',
+            '|',
+            'bulletedList',
+            'numberedList',
+            '|',
+            'insertTable',
+            '|',
+            'link',
+            'blockQuote'
+        ],
+        language: 'ru'
+    };
+
+    function initializeEditor(elementSelector, fieldName) {
+        Editor
+            .create(document.querySelector(elementSelector), editorConfig)
+            .then(editor => {
+                // Register the codeInline attribute
+                try {
+                    editor.model.schema.extend('$text', { allowAttributes: 'codeInline' });
+                    
+                    // Add conversion from model to view
+                    editor.conversion.attributeToElement({
+                        model: 'codeInline',
+                        view: {
+                            name: 'code'
+                        }
+                    });
+                } catch (e) {
+                    console.warn('Could not register codeInline attribute:', e);
+                }
+                
+                window.editors[fieldName] = editor;
+                console.log(fieldName + ' editor initialized');
+            })
+            .catch(error => {
+                console.error(fieldName + ' editor error:', error);
+            });
+    }
+
+    // Initialize both editors
+    initializeEditor('#theory', 'theory');
+    initializeEditor('#lab', 'lab');
 });
 </script>
+<style>
+/* Inline code styling */
+.ck-content code,
+code {
+    background-color: #f5f5f5;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: "Courier New", "Consolas", monospace;
+    font-size: 0.9em;
+}
+
+/* Dark theme for code */
+[data-theme="dark"] .ck-content code,
+[data-theme="dark"] code {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+/* Inline code button styling */
+.inline-code-btn:hover {
+    background: #e0e0e0;
+}
+
+.inline-code-btn:active {
+    background: #d0d0d0;
+}
+</style>
