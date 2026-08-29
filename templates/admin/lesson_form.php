@@ -41,7 +41,7 @@ $testsText = isset($testsText) ? $testsText : '';
             <div class="admin-form__field">
                 <label class="admin-form__label" for="section_id">Раздел *</label>
                 <select class="admin-form__select" id="section_id" name="section_id" required>
-                    <option value="">Выберите раздел</option>
+                    <option value=""></option>
                     <?php foreach ($sections as $section): ?>
                         <option value="<?php echo $section['id']; ?>" 
                                 <?php echo $sectionId == $section['id'] ? 'selected' : ''; ?>>
@@ -55,28 +55,24 @@ $testsText = isset($testsText) ? $testsText : '';
                 <label class="admin-form__label" for="title_ru">Название урока *</label>
                 <input class="admin-form__input" type="text" id="title_ru" name="title_ru" 
                        value="<?php echo $lessonTitle; ?>" required>
-                <small class="admin-form__hint">Название на русском языке</small>
             </div>
             
             <div class="admin-form__field">
                 <label class="admin-form__label" for="slug">Slug *</label>
                 <input class="admin-form__input" type="text" id="slug" name="slug" 
                        value="<?php echo $lessonSlug; ?>" required
-                       pattern="^[a-z-]+$" title="Только маленькие английские буквы и дефисы">
-                <small class="admin-form__hint">Только маленькие английские буквы и дефисы</small>
+                       pattern="^[a-z-]+$">
             </div>
             
             <div class="admin-form__field">
                 <label class="admin-form__label" for="lesson_order">Порядковый номер *</label>
                 <input class="admin-form__input" type="number" id="lesson_order" name="lesson_order" 
                        value="<?php echo $lessonOrder; ?>" required min="1">
-                <small class="admin-form__hint">Число для формирования URL</small>
             </div>
             
             <div class="admin-form__field">
                 <label class="admin-form__label" for="theory">Теоретический материал</label>
                 <textarea class="admin-form__editor" id="theory" name="theory" rows="10"><?php echo $theoryContent; ?></textarea>
-                <small class="admin-form__hint">HTML контент теории</small>
             </div>
             
             <div class="admin-form__field">
@@ -90,13 +86,11 @@ $testsText = isset($testsText) ? $testsText : '';
 
 Вопрос 2?
 ..."><?php echo $testsText; ?></textarea>
-                <small class="admin-form__hint">Текстовый формат тестов. Правильный ответ отмечается ✔ в конце строки. Блоки вопросов разделяются пустой строкой.</small>
             </div>
             
             <div class="admin-form__field">
                 <label class="admin-form__label" for="lab">Лабораторная работа</label>
                 <textarea class="admin-form__editor" id="lab" name="lab" rows="10"><?php echo $labContent; ?></textarea>
-                <small class="admin-form__hint">HTML контент лабораторной работы</small>
             </div>
             
             <div class="admin-form__actions">
@@ -125,8 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 'insertTable', '|',
                 'link'
             ],
-            language: 'ru',
-            placeholder: 'Введите теоретический материал...'
+            language: 'ru'
         })
         .catch(error => {
             console.error(error);
@@ -144,8 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 'insertTable', '|',
                 'link'
             ],
-            language: 'ru',
-            placeholder: 'Введите содержание лабораторной работы...'
+            language: 'ru'
         })
         .catch(error => {
             console.error(error);

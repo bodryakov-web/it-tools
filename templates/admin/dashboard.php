@@ -60,7 +60,6 @@
                                 <?php foreach ($section['lessons'] as $lesson): ?>
                                     <div class="admin-lesson-item">
                                         <div class="admin-lesson-item__info">
-                                            <span class="admin-lesson-item__order"><?php echo $lesson['lesson_order']; ?>.</span>
                                             <span class="admin-lesson-item__title"><?php echo htmlspecialchars($lesson['title_ru']); ?></span>
                                             <span class="admin-lesson-item__slug">(<?php echo htmlspecialchars($lesson['slug']); ?>)</span>
                                         </div>

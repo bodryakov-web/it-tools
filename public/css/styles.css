@@ -351,12 +351,6 @@
     box-shadow: var(--shadow-md);
   }
 
-  .lesson-button__number {
-    font-weight: 700;
-    font-size: var(--font-size-lg);
-    min-width: 2rem;
-  }
-
   .lesson-button__title {
     font-weight: 500;
   }
@@ -859,11 +853,6 @@
     flex: 1;
   }
 
-  .admin-lesson-item__order {
-    font-weight: 700;
-    color: var(--color-primary);
-  }
-
   .admin-lesson-item__title {
     font-weight: 500;
   }
@@ -922,7 +911,7 @@
   }
 
   .admin-form__container {
-    max-width: 800px;
+    max-width: clamp(360px, 90vw, 1900px);
     background-color: var(--color-surface);
     border-radius: var(--radius-lg);
     padding: var(--spacing-2xl);
@@ -1004,8 +993,11 @@
     min-height: 100px;
   }
 
-  .admin-form__editor {
-    min-height: 300px;
+  #theory + .ck-editor .ck-editor__editable,
+  #lab + .ck-editor .ck-editor__editable {
+    height: 85vh;
+    overflow-y: scroll;
+    overflow-x: auto;
   }
 
   .admin-form__hint {

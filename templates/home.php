@@ -33,7 +33,6 @@
                                     <a href="/it-tools/<?php echo $section['section_order']; ?>-<?php echo htmlspecialchars($section['slug']); ?>/<?php echo $lesson['lesson_order']; ?>-<?php echo htmlspecialchars($lesson['slug']); ?>" 
                                        class="lesson-button"
                                        data-lesson-id="<?php echo $lesson['id']; ?>">
-                                        <span class="lesson-button__number"><?php echo $lesson['lesson_order']; ?>.</span>
                                         <span class="lesson-button__title"><?php echo htmlspecialchars($lesson['title_ru']); ?></span>
                                     </a>
                                 <?php endforeach; ?>
