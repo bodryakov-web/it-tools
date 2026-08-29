@@ -36,6 +36,17 @@ $requestUri = str_replace('/it-tools', '', $requestUri);
 // Удаление начального и конечного слешей
 $requestUri = trim($requestUri, '/');
 
+// Отделяем query string от пути
+$queryString = '';
+if (strpos($requestUri, '?') !== false) {
+    list($requestUri, $queryString) = explode('?', $requestUri, 2);
+    // Разбираем query string в $_GET (на случай если она была потеряна)
+    parse_str($queryString, $queryArray);
+    foreach ($queryArray as $key => $value) {
+        $_GET[$key] = $value;
+    }
+}
+
 // Разделение URI на части
 $parts = explode('/', $requestUri);
 
@@ -53,8 +64,12 @@ if (empty($requestUri) || $requestUri === '') {
     // Обработка действий админ-панели
     if (isset($parts[1])) {
         $action = $parts[1];
-        if (method_exists($controller, $action)) {
-            $controller->$action();
+        // Преобразуем kebab-case в CamelCase (create-section -> createSection)
+        $camelCaseAction = str_replace(' ', '', ucwords(str_replace('-', ' ', $action)));
+        $camelCaseAction = lcfirst($camelCaseAction);
+        
+        if (method_exists($controller, $camelCaseAction)) {
+            $controller->$camelCaseAction();
         } else {
             $controller->dashboard();
         }

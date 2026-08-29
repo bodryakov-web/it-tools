@@ -158,6 +158,17 @@ class Section {
      * @return bool true если формат корректен, false если нет
      */
     public function validateSlugFormat($slug) {
-        return preg_match('/^[a-z-]+$/', $slug) && !empty($slug);
+        // Debug output - записываем в глобальную переменную для вывода в форме
+        if (!isset($GLOBALS['debug_slug'])) {
+            $GLOBALS['debug_slug'] = [];
+        }
+        $GLOBALS['debug_slug'][] = [
+            'slug' => $slug,
+            'empty' => empty($slug) ? 'empty' : 'not empty',
+            'preg_match' => preg_match('/^[a-z-]+$/', $slug) ? 'true' : 'false'
+        ];
+        
+        $result = preg_match('/^[a-z-]+$/', $slug) && !empty($slug);
+        return $result;
     }
 }
