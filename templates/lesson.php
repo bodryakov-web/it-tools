@@ -33,17 +33,46 @@
             <h2 class="lesson__section-title">Тестирование</h2>
             <div class="tests">
                 <?php foreach ($lesson['content']['tests'] as $testIndex => $test): ?>
+                    <?php
+                        // Определяем правильный ответ по маркеру (correct) или галочке ✓ в тексте
+                        $correctAnswer = -1;
+                        $processedAnswers = [];
+                        foreach ($test['answers'] as $ansIndex => $ans) {
+                            // Очищаем от всех пробелов вокруг маркера
+                            $cleanedAns = trim($ans);
+                            
+                            // Проверяем наличие маркера (correct) или галочки ✓
+                            if (strpos($cleanedAns, '(correct)') !== false || strpos($cleanedAns, '✓') !== false) {
+                                $correctAnswer = count($processedAnswers); // Сохраняем индекс ПОСЛЕ удаления
+                                // Удаляем оба маркера из текста ответа
+                                $cleanedAns = str_replace('(correct)', '', $cleanedAns);
+                                $cleanedAns = str_replace('✓', '', $cleanedAns);
+                                $cleanedAns = trim($cleanedAns);
+                            }
+                            
+                            // Удаляем невидимые символы и символ замены Unicode (U+FFFD)
+                            $cleanedAns = trim($cleanedAns);
+                            $cleanedAns = preg_replace('/[\x{FFFD}\x{200B}-\x{200D}\x{FEFF}]+/u', '', $cleanedAns);
+                            $cleanedAns = trim($cleanedAns);
+                            
+                            $processedAnswers[] = $cleanedAns;
+                        }
+                        // Если не найден правильный ответ, берём первый (по умолчанию)
+                        if ($correctAnswer === -1) {
+                            $correctAnswer = 0;
+                        }
+                    ?>
                     <div class="test-question" data-test-question="<?php echo $testIndex; ?>">
                         <h3 class="test-question__title">
                             <span class="test-question__number"><?php echo $testIndex + 1; ?>.</span>
                             <?php echo htmlspecialchars($test['question']); ?>
                         </h3>
                         <div class="test-question__answers">
-                            <?php foreach ($test['answers'] as $answerIndex => $answer): ?>
+                            <?php foreach ($processedAnswers as $answerIndex => $answer): ?>
                                 <button class="test-answer" 
                                         data-test-question="<?php echo $testIndex; ?>" 
                                         data-test-answer="<?php echo $answerIndex; ?>"
-                                        data-correct="<?php echo $test['correct']; ?>">
+                                        data-correct="<?php echo $correctAnswer; ?>">
                                     <span class="test-answer__marker"></span>
                                     <span class="test-answer__text"><?php echo htmlspecialchars($answer); ?></span>
                                 </button>

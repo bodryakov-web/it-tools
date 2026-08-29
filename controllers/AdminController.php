@@ -444,7 +444,7 @@ class AdminController {
                     header('Location: /it-tools/bod/dashboard');
                     exit;
                 } else {
-                    $errors[] = 'Ошибка при обновлении урока';
+                    $errors[] = 'Ошибка при обновлении урока: не удалось сохранить данные. Проверьте текст, HTML и спецсимволы.';
                 }
             }
             

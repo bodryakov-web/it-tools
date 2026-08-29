@@ -40,7 +40,8 @@ class Lesson {
         $sql = "SELECT * FROM lessons WHERE id = :id";
         $result = $this->db->queryOne($sql, ['id' => $id]);
         if ($result) {
-            $result['content'] = json_decode($result['content'], true);
+            $decoded = json_decode($result['content'], true);
+            $result['content'] = json_last_error() === JSON_ERROR_NONE ? $decoded : [];
         }
         return $result;
     }
@@ -79,7 +80,11 @@ class Lesson {
      * @return bool true при успехе, false при ошибке
      */
     public function create($data) {
-        $contentJson = json_encode($data['content'], JSON_UNESCAPED_UNICODE);
+        $contentJson = $this->encodeContent($data['content'] ?? []);
+        if ($contentJson === false) {
+            return false;
+        }
+
         $sql = "INSERT INTO lessons (section_id, title_ru, slug, lesson_order, content) 
                 VALUES (:section_id, :title_ru, :slug, :lesson_order, :content)";
         $params = [
@@ -100,7 +105,12 @@ class Lesson {
      * @return bool true при успехе, false при ошибке
      */
     public function update($id, $data) {
-        $contentJson = json_encode($data['content'], JSON_UNESCAPED_UNICODE);
+        $contentJson = $this->encodeContent($data['content'] ?? []);
+        if ($contentJson === false) {
+            error_log('Lesson content JSON encode failed for lesson id=' . $id);
+            return false;
+        }
+
         $sql = "UPDATE lessons SET section_id = :section_id, title_ru = :title_ru, 
                 slug = :slug, lesson_order = :lesson_order, content = :content WHERE id = :id";
         $params = [
@@ -190,6 +200,22 @@ class Lesson {
      */
     public function validateSlugFormat($slug) {
         return preg_match('/^[a-z-]+$/', $slug) && !empty($slug);
+    }
+
+    /**
+     * Кодирует JSON для поля content и защищает от проблем с UTF-8
+     *
+     * @param mixed $content
+     * @return string|false
+     */
+    private function encodeContent($content) {
+        $encoded = json_encode($content, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
+        if ($encoded === false) {
+            error_log('Lesson JSON encode error: ' . json_last_error_msg());
+            return false;
+        }
+
+        return $encoded;
     }
     
     /**
