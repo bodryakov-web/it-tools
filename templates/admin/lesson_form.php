@@ -72,12 +72,10 @@ $testsText = isset($testsText) ? $testsText : '';
             
             <div class="admin-form__field">
                 <label class="admin-form__label" for="theory">Теоретический материал</label>
-                <div style="display: flex; gap: 10px; margin-bottom: 8px;">
-                    <button type="button" class="inline-code-btn" onclick="wrapInCode('theory')" style="padding: 6px 12px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-family: monospace; font-weight: bold;">
-                        &lt;code&gt;
-                    </button>
+                <div class="editor-container">
+                    <button type="button" class="inline-code-btn" onclick="wrapInCode('theory')">&lt;code&gt;</button>
+                    <textarea class="admin-form__editor" id="theory" name="theory" rows="10"><?php echo $theoryContent; ?></textarea>
                 </div>
-                <textarea class="admin-form__editor" id="theory" name="theory" rows="10"><?php echo $theoryContent; ?></textarea>
             </div>
             
             <div class="admin-form__field">
@@ -95,12 +93,10 @@ $testsText = isset($testsText) ? $testsText : '';
             
             <div class="admin-form__field">
                 <label class="admin-form__label" for="lab">Лабораторная работа</label>
-                <div style="display: flex; gap: 10px; margin-bottom: 8px;">
-                    <button type="button" class="inline-code-btn" onclick="wrapInCode('lab')" style="padding: 6px 12px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-family: monospace; font-weight: bold;">
-                        &lt;code&gt;
-                    </button>
+                <div class="editor-container">
+                    <button type="button" class="inline-code-btn" onclick="wrapInCode('lab')">&lt;code&gt;</button>
+                    <textarea class="admin-form__editor" id="lab" name="lab" rows="10"><?php echo $labContent; ?></textarea>
                 </div>
-                <textarea class="admin-form__editor" id="lab" name="lab" rows="10"><?php echo $labContent; ?></textarea>
             </div>
             
             <div class="admin-form__actions">
@@ -156,17 +152,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const editorConfig = {
         toolbar: [
-            'heading',
             'bold',
-            'italic',
-            '|',
-            'bulletedList',
-            'numberedList',
             '|',
             'insertTable',
             '|',
-            'link',
-            'blockQuote'
+            'link'
         ],
         language: 'ru'
     };
@@ -221,7 +211,31 @@ code {
     color: #e0e0e0;
 }
 
+/* Editor container for positioning */
+.editor-container {
+    position: relative;
+}
+
+/* Shift CKEditor toolbar to the right */
+.editor-container .ck-toolbar {
+    padding-left: clamp(80px, 10%, 120px);
+}
+
 /* Inline code button styling */
+.inline-code-btn {
+    position: absolute;
+    top: 1%;
+    left: 10px;
+    z-index: 1000;
+    padding: 6px 12px;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: monospace;
+    font-weight: bold;
+}
+
 .inline-code-btn:hover {
     background: #e0e0e0;
 }
