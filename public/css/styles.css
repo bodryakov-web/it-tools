@@ -474,6 +474,26 @@
     padding: 0;
   }
 
+  .lesson__content figure.table,
+  .lesson__content figure.table > table,
+  .lesson__content table {
+    float: none;
+    width: max-content;
+    max-width: none;
+    margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    text-align: left;
+  }
+
+  .lesson__content figure.table > table td,
+  .lesson__content figure.table > table th,
+  .lesson__content table td,
+  .lesson__content table th {
+    white-space: nowrap;
+    width: auto;
+  }
+
   /* === Tests === */
   .tests {
     display: grid;

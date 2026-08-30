@@ -258,10 +258,27 @@ code {
 }
 
 /* Make newly inserted CKEditor tables compact by default */
+.ck-content figure.table {
+    float: none !important;
+    width: max-content !important;
+    max-width: none !important;
+    margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    text-align: left !important;
+}
+
 .ck-content figure.table > table,
 .ck-content table {
     border-collapse: collapse;
     table-layout: auto;
+    float: none !important;
+    width: max-content !important;
+    max-width: none !important;
+    margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    text-align: left !important;
 }
 
 .ck-content figure.table > table td,
@@ -272,6 +289,7 @@ code {
     vertical-align: top;
     min-width: 0 !important;
     width: 1em !important;
+    white-space: nowrap !important;
 }
 
 .ck-content figure.table > table td p,
