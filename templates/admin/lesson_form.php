@@ -162,20 +162,39 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     function initializeEditor(elementSelector, fieldName) {
+        const textarea = document.querySelector(elementSelector);
+        const initialData = textarea.value;
+        
         Editor
-            .create(document.querySelector(elementSelector), editorConfig)
+            .create(textarea, editorConfig)
             .then(editor => {
                 // Register the codeInline attribute
                 try {
                     editor.model.schema.extend('$text', { allowAttributes: 'codeInline' });
                     
-                    // Add conversion from model to view
+                    // Add conversion from model to view (downcast)
                     editor.conversion.attributeToElement({
                         model: 'codeInline',
                         view: {
                             name: 'code'
                         }
                     });
+                    
+                    // Add conversion from view to model (upcast)
+                    editor.conversion.for('upcast').elementToAttribute({
+                        view: {
+                            name: 'code'
+                        },
+                        model: {
+                            key: 'codeInline',
+                            value: true
+                        }
+                    });
+                    
+                    // Load initial data from textarea
+                    if (initialData) {
+                        editor.setData(initialData);
+                    }
                 } catch (e) {
                     console.warn('Could not register codeInline attribute:', e);
                 }
@@ -191,6 +210,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize both editors
     initializeEditor('#theory', 'theory');
     initializeEditor('#lab', 'lab');
+    
+    // Sync editor data to textarea before form submission
+    const form = document.querySelector('.admin-form__form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            // Sync theory editor
+            if (window.editors['theory']) {
+                const theoryTextarea = document.querySelector('#theory');
+                theoryTextarea.value = window.editors['theory'].getData();
+            }
+            
+            // Sync lab editor
+            if (window.editors['lab']) {
+                const labTextarea = document.querySelector('#lab');
+                labTextarea.value = window.editors['lab'].getData();
+            }
+        });
+    }
 });
 </script>
 <style>
@@ -201,7 +238,7 @@ code {
     padding: 0.2em 0.4em;
     border-radius: 3px;
     font-family: "Courier New", "Consolas", monospace;
-    font-size: 0.9em;
+    font-size: clamp(1.3rem, 1.1rem + 0.7vw, 2rem);
 }
 
 /* Dark theme for code */

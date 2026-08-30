@@ -16,6 +16,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/it-tools/public/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/it-tools/public/images/apple-touch-icon.png">
+    <link rel="manifest" href="/it-tools/public/manifest.webmanifest">
     <link rel="stylesheet" href="/it-tools/public/css/styles.css">
 </head>
 <body>
@@ -25,8 +28,8 @@
                 <a href="/it-tools/" class="header__logo-link">IT-Tools</a>
             </div>
             <div class="header__center">
-                <span class="header__center-text header__center-text--short">IT инструменты для бизнеса</span>
-                <span class="header__center-text header__center-text--long">IT инструменты для бизнеса (анализ данных, визуализация, боты, программирование без кода, автоматизация, ИИ)</span>
+                <h4 class="header__center-text header__center-text--short">IT инструменты для бизнеса</span>
+                <h4 class="header__center-text header__center-text--long">IT инструменты для бизнеса (анализ данных, визуализация, боты, программирование без кода, автоматизация, ИИ)</span>
             </div>
             <div class="header__theme-toggle">
                 <button class="theme-toggle" data-action="toggle-theme" aria-label="Переключить тему">
