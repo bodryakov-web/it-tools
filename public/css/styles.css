@@ -125,6 +125,10 @@
     font-size: clamp(1rem, 0.9rem + 0.5vw, 1.2rem);
   }
 
+  td {
+    padding: 0 1vw !important;
+  }
+
   /* === Header === */
   .header {
     background-color: var(--color-surface);
@@ -490,6 +494,7 @@
   .lesson__content figure.table > table th,
   .lesson__content table td,
   .lesson__content table th {
+    padding: 1vw;
     white-space: nowrap;
     width: auto;
   }

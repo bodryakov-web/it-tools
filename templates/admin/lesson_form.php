@@ -285,7 +285,6 @@ code {
 .ck-content figure.table > table th,
 .ck-content table td,
 .ck-content table th {
-    padding: 0 !important;
     vertical-align: top;
     min-width: 0 !important;
     width: 1em !important;
@@ -297,7 +296,6 @@ code {
 .ck-content table td p,
 .ck-content table th p {
     margin: 0;
-    padding: 0 !important;
     min-height: 0 !important;
     line-height: 1 !important;
 }
