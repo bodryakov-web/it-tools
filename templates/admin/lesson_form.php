@@ -73,7 +73,6 @@ $testsText = isset($testsText) ? $testsText : '';
             <div class="admin-form__field">
                 <label class="admin-form__label" for="theory">Теоретический материал</label>
                 <div class="editor-container">
-                    <button type="button" class="inline-code-btn" onclick="wrapInCode('theory')">&lt;code&gt;</button>
                     <textarea class="admin-form__editor" id="theory" name="theory" rows="10"><?php echo $theoryContent; ?></textarea>
                 </div>
             </div>
@@ -94,7 +93,6 @@ $testsText = isset($testsText) ? $testsText : '';
             <div class="admin-form__field">
                 <label class="admin-form__label" for="lab">Лабораторная работа</label>
                 <div class="editor-container">
-                    <button type="button" class="inline-code-btn" onclick="wrapInCode('lab')">&lt;code&gt;</button>
                     <textarea class="admin-form__editor" id="lab" name="lab" rows="10"><?php echo $labContent; ?></textarea>
                 </div>
             </div>
@@ -168,6 +166,24 @@ document.addEventListener('DOMContentLoaded', function() {
         Editor
             .create(textarea, editorConfig)
             .then(editor => {
+                const toolbarElement = editor.ui.view.toolbar.element;
+                if (toolbarElement) {
+                    const codeButton = document.createElement('button');
+                    codeButton.type = 'button';
+                    codeButton.className = 'ck ck-button ck-button_with-text inline-code-btn';
+                    codeButton.setAttribute('aria-label', 'Code');
+                    codeButton.setAttribute('title', 'Code');
+                    codeButton.textContent = '<code>';
+                    codeButton.addEventListener('click', () => wrapInCode(fieldName));
+
+                    const itemsWrapper = toolbarElement.querySelector('.ck-toolbar__items');
+                    if (itemsWrapper) {
+                        itemsWrapper.prepend(codeButton);
+                    } else {
+                        toolbarElement.prepend(codeButton);
+                    }
+                }
+
                 // Register the codeInline attribute
                 try {
                     editor.model.schema.extend('$text', { allowAttributes: 'codeInline' });
@@ -241,6 +257,40 @@ code {
     font-size: clamp(1.3rem, 1.1rem + 0.7vw, 2rem);
 }
 
+/* Make newly inserted CKEditor tables compact by default */
+.ck-content figure.table > table,
+.ck-content table {
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+.ck-content figure.table > table td,
+.ck-content figure.table > table th,
+.ck-content table td,
+.ck-content table th {
+    padding: 0 !important;
+    vertical-align: top;
+    min-width: 0 !important;
+    width: 1em !important;
+}
+
+.ck-content figure.table > table td p,
+.ck-content figure.table > table th p,
+.ck-content table td p,
+.ck-content table th p {
+    margin: 0;
+    padding: 0 !important;
+    min-height: 0 !important;
+    line-height: 1 !important;
+}
+
+.ck-content figure.table > table td > p:first-child:only-child:empty::before,
+.ck-content figure.table > table th > p:first-child:only-child:empty::before,
+.ck-content table td > p:first-child:only-child:empty::before,
+.ck-content table th > p:first-child:only-child:empty::before {
+    content: "\200b";
+}
+
 /* Dark theme for code */
 [data-theme="dark"] .ck-content code,
 [data-theme="dark"] code {
@@ -253,31 +303,39 @@ code {
     position: relative;
 }
 
-/* Shift CKEditor toolbar to the right */
-.editor-container .ck-toolbar {
-    padding-left: clamp(80px, 10%, 120px);
-}
-
 /* Inline code button styling */
 .inline-code-btn {
-    position: absolute;
-    top: 1%;
-    left: 10px;
-    z-index: 1000;
-    padding: 6px 12px;
-    background: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    margin-right: var(--spacing-sm);
+    gap: 0;
+    padding: var(--ck-spacing-tiny) var(--ck-spacing-standard);
+    border: 1px solid var(--ck-color-base-border);
+    border-radius: var(--ck-border-radius);
+    background: var(--ck-color-button-default-background);
+    color: var(--ck-color-button-default-text);
     cursor: pointer;
-    font-family: monospace;
-    font-weight: bold;
+    font: inherit;
+    line-height: 1.1;
+    white-space: nowrap;
+    box-shadow: none;
+    appearance: none;
 }
 
 .inline-code-btn:hover {
-    background: #e0e0e0;
+    background: var(--ck-color-button-default-hover-background);
+    color: var(--ck-color-button-default-hover-text);
 }
 
 .inline-code-btn:active {
-    background: #d0d0d0;
+    background: var(--ck-color-button-default-active-background);
+    color: var(--ck-color-button-default-active-text);
+}
+
+.inline-code-btn:focus {
+    outline: none;
+    box-shadow: var(--ck-focus-outer-shadow), var(--ck-focus-inner-shadow);
 }
 </style>

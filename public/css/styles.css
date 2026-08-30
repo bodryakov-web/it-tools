@@ -990,8 +990,8 @@
     min-height: 100px;
   }
 
-  #theory + .ck-editor .ck-editor__editable,
-  #lab + .ck-editor .ck-editor__editable {
+  #theory + .ck-editor > .ck-editor__editable,
+  #lab + .ck-editor > .ck-editor__editable {
     height: 85vh;
     overflow-y: scroll;
     overflow-x: auto;
