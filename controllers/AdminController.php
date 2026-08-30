@@ -505,7 +505,7 @@ class AdminController {
             
             $question = $lines[0];
             $answers = [];
-            $correct = 0;
+            $correct = null; // Изначально правильный ответ не определен
             
             // Проверка, что вопрос заканчивается на ?
             if (!str_ends_with($question, '?')) {
@@ -516,15 +516,17 @@ class AdminController {
             for ($i = 1; $i <= 4; $i++) {
                 if (isset($lines[$i])) {
                     $answer = $lines[$i];
-                    // Проверка на галочку (✔) в конце строки
+                    // Проверка на галочку (✔) в конце строки (с пробелом или без)
+                    $answer = trim($answer); // Удаляем пробелы по краям
                     if (str_ends_with($answer, '✔')) {
                         $correct = $i - 1; // Индекс правильного ответа (0-3)
-                        $answer = trim(substr($answer, 0, -1)); // Удаление галочки
+                        $answer = mb_substr($answer, 0, -1, 'UTF-8'); // Удаление одного символа с конца
                     }
                     $answers[] = $answer;
                 }
             }
             
+            // Сохраняем если есть 4 ответа (используем существующий correct или null если нет галочки)
             if (count($answers) === 4) {
                 $tests[] = [
                     'question' => $question,
@@ -553,8 +555,8 @@ class AdminController {
             $text .= $test['question'] . "\n";
             
             foreach ($test['answers'] as $index => $answer) {
-                if ($index === $test['correct']) {
-                    $text .= $answer . ' ✔' . "\n";
+                if ($test['correct'] !== null && $index === $test['correct']) {
+                    $text .= $answer . '✔' . "\n";
                 } else {
                     $text .= $answer . "\n";
                 }

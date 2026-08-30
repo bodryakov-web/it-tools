@@ -10,15 +10,8 @@
 
 <div class="lesson">
     <div class="lesson__container">
-        <!-- Хлебные крошки (навигация) -->
-        <div class="lesson__breadcrumbs">
-            <a href="/it-tools/" class="lesson__breadcrumb" data-action="go-home">Оглавление</a>
-            <span class="lesson__breadcrumb-separator">/</span>
-            <span class="lesson__breadcrumb-current"><?php echo htmlspecialchars($lesson['title_ru']); ?></span>
-        </div>
-        
         <!-- Заголовок урока -->
-        <h1 class="lesson__title"><?php echo htmlspecialchars($lesson['title_ru']); ?></h1>
+        <h2 class="lesson__title"><?php echo htmlspecialchars($lesson['title_ru']); ?></h1>
         
         <!-- Секция: Теоретический материал -->
         <section class="lesson__section lesson__section--theory">
