@@ -10,8 +10,6 @@
 
 <div class="home">
     <div class="home__container">
-        <h1 class="home__title">Учебный курс IT-Tools</h1>
-        <p class="home__subtitle">IT инструменты для бизнеса — от основ до практического применения</p>
         
         <div class="sections">
             <?php if (empty($sectionsWithLessons)): ?>
