@@ -99,7 +99,6 @@ function showFeedback(element, type) {
   if (type === "correct") {
     marker.classList.add("test-answer__marker--correct");
   } else {
-    marker.textContent = "✖";
     marker.classList.add("test-answer__marker--incorrect");
   }
 }
