@@ -38,6 +38,7 @@
     --color-primary: oklch(50% 0.1 250);
     --color-primary-hover: oklch(45% 0.12 250);
     --color-blue: oklch(45% 0.3 264);
+    --color-light-blue: oklch(70% 0.3 264);
     --color-success: oklch(60% 0.15 140);
     --color-error: oklch(55% 0.2 25);
 
@@ -326,7 +327,7 @@
   }
 
   .section-card__title {
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-xl);
     font-weight: 600;
     margin-bottom: var(--spacing-lg);
     color: var(--color-text-primary);
@@ -356,7 +357,7 @@
   }
 
   [data-theme="dark"] .lesson-button {
-    background-color: var(--color-gray-800);
+    background-color: var(--color-dark-background);
   }
 
   .lesson-button:hover {
@@ -365,8 +366,15 @@
     box-shadow: var(--shadow-md);
   }
 
+  [data-theme="dark"] .lesson-button:hover {
+  color: var(--color-light-blue);
+  border-color: var(--color-light-blue);
+}
+
   .lesson-button__title {
     font-weight: 500;
+    font-size: var(--font-size-xl);
+    line-height: 1.2;
   }
 
   /* === Lesson Page === */
@@ -1060,10 +1068,6 @@
       padding: var(--spacing-xl) var(--spacing-lg);
     }
 
-    .section-card__lessons {
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    }
-
     .lesson__navigation {
       flex-wrap: nowrap;
     }
@@ -1089,7 +1093,7 @@
     }
 
     .section-card__lessons {
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .lesson__section {
@@ -1132,6 +1136,10 @@
     .main,
     .footer__container {
       max-width: 1900px;
+    }
+
+    .section-card__lessons {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
 }
