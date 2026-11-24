@@ -137,6 +137,31 @@ function wrapInCode(fieldId) {
     }
 }
 
+// Helper function to remove code formatting from selected text
+function clearCode(fieldId) {
+    const editor = window.editors && window.editors[fieldId];
+    if (!editor) {
+        return;
+    }
+
+    const selection = editor.model.document.selection;
+    if (selection.isCollapsed) {
+        alert('Please select text first');
+        return;
+    }
+
+    try {
+        editor.model.change(writer => {
+            for (const range of selection.getRanges()) {
+                writer.removeAttribute('codeInline', range);
+                writer.removeAttribute('code', range);
+            }
+        });
+    } catch (error) {
+        console.error('Error clearing code formatting:', error);
+    }
+}
+
 // Store editors globally for access
 window.editors = {};
 
@@ -156,6 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
             '|',
             'link'
         ],
+        removePlugins: ['Autoformat'],
         language: 'ru'
     };
 
@@ -176,11 +202,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     codeButton.textContent = '<code>';
                     codeButton.addEventListener('click', () => wrapInCode(fieldName));
 
+                    const clearButton = document.createElement('button');
+                    clearButton.type = 'button';
+                    clearButton.className = 'ck ck-button ck-button_with-text inline-code-btn';
+                    clearButton.setAttribute('aria-label', 'Clear code');
+                    clearButton.setAttribute('title', 'Clear code');
+                    clearButton.textContent = '<clear>';
+                    clearButton.addEventListener('click', () => clearCode(fieldName));
+
                     const itemsWrapper = toolbarElement.querySelector('.ck-toolbar__items');
                     if (itemsWrapper) {
-                        itemsWrapper.prepend(codeButton);
+                        itemsWrapper.prepend(codeButton, clearButton);
                     } else {
-                        toolbarElement.prepend(codeButton);
+                        toolbarElement.prepend(codeButton, clearButton);
                     }
                 }
 

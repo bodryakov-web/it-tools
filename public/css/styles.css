@@ -515,12 +515,12 @@
   }
 
   [data-theme="dark"] .test-question {
-    background-color: var(--color-gray-800);
+    background-color: var(--color-dark-background);
   }
 
   .test-question__title {
-    font-size: var(--font-size-lg);
-    font-weight: 600;
+    font-size: calc(var(--font-size-base) - 5%);
+    font-weight: normal;
     margin-bottom: var(--spacing-md);
     display: flex;
     align-items: flex-start;
@@ -550,6 +550,7 @@
     text-align: left;
     font-family: inherit;
     font-size: inherit;
+    color: inherit;
   }
 
   .test-answer:hover:not(:disabled) {
@@ -558,11 +559,11 @@
   }
 
   [data-theme="dark"] .test-answer:hover:not(:disabled) {
-    background-color: var(--color-gray-700);
+    background-color: var(--color-gray-800);
   }
 
   .test-answer:disabled {
-    cursor: not-allowed;
+    cursor: default;
     color: var(--color-text-primary);
     -webkit-text-fill-color: var(--color-text-primary);
   }
